@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   RefreshControl,
   TextInput,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { MagnifyingGlassIcon } from "phosphor-react-native";
@@ -43,8 +44,8 @@ const ProductsScreen = () => {
 
   const filteredProducts = searchTerm.trim()
     ? products.filter((product) =>
-        product.title.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+      product.title.toLowerCase().includes(searchTerm.toLowerCase())
+    )
     : products;
 
   const onRefresh = () => {
@@ -107,8 +108,7 @@ const ProductsScreen = () => {
     <SafeAreaView style={styles.container}>
       <View style={GlobleStyle.circleTop} />
       <View style={GlobleStyle.circleBottom} />
-      
-      <View style={styles.searchContainer}>
+      <View style={[styles.searchContainer, { marginTop: Platform.OS === "ios" ? -20 : 10 }]}>
         <MagnifyingGlassIcon
           size={20}
           color="#666"
@@ -155,7 +155,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5",
   },
   searchContainer: {
-    marginTop : -25,
     flexDirection: "row",
     alignItems: "center",
     backgroundColor: "#fff",
