@@ -11,6 +11,8 @@ import LoginScreen from "../screens/LoginScreen"
 import HomeScreen from "../screens/HomeScreen"
 import ProductsScreen from "../screens/ProductsScreen"
 import CartScreen from "../screens/CartScreen"
+import { ShoppingBagIcon, ListIcon, ShoppingCartIcon } from "phosphor-react-native"
+import { TouchableOpacity } from "react-native"
 
 export type RootStackParamList = {
   Splash: undefined
@@ -31,7 +33,7 @@ const TabNavigator = () => {
 
   return (
     <Tab.Navigator
-      screenOptions={{
+      screenOptions={({ route }) => ({
         headerShown: false,
         tabBarStyle: {
           backgroundColor: '#fff',
@@ -39,7 +41,30 @@ const TabNavigator = () => {
         },
         tabBarActiveTintColor: '#4A90E2',
         tabBarInactiveTintColor: '#666',
-      }}
+
+        tabBarIcon: ({ color, size, focused }) => {
+          if (route.name === 'Products') {
+            return (
+              <ShoppingBagIcon
+                size={size}
+                color={color}
+                weight={focused ? 'fill' : 'regular'}
+              />
+            );
+          }
+
+          if (route.name === 'Cart') {
+            return (
+              <ShoppingCartIcon
+                size={size}
+                color={color}
+                weight={focused ? 'fill' : 'regular'}
+              />
+            );
+          }
+        },
+      })}
+
     >
       <Tab.Screen
         name="Products"
@@ -71,6 +96,19 @@ const DrawerNavigator = () => {
         headerTitleStyle: {
           fontWeight: 'bold',
         },
+
+        headerLeft: () => (
+          <TouchableOpacity
+            onPress={() => console.log('Three dot clicked')}
+            style={{ marginLeft: 15 }}
+          >
+            <ListIcon
+              size={22}
+              color="#fff"
+              weight="bold"
+            />
+          </TouchableOpacity>
+        ),
       }}
     >
       <Drawer.Screen
