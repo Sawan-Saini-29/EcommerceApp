@@ -1,4 +1,4 @@
-import React, { use, useContext, useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 import {
   View,
   Text,
@@ -9,15 +9,18 @@ import {
 import CustomButton from "../components/CustomButton"
 import LogoutModal from "../components/LogoutModal"
 import { AuthContext } from "../context/AuthContext"
+import { CartContext } from "../context/CartContext"
 import { GlobleStyle } from "../components/GlobleStyle"
 import { SafeAreaView } from "react-native-safe-area-context"
 
-const HomeScreen = ({ navigation }: any) => {
+const HomeScreen = () => {
   const { logout, user } = useContext(AuthContext)
+  const { clearCart } = useContext(CartContext)
   const [visible, setVisible] = useState(false)
 
   const confirmLogout = async () => {
     setVisible(false)
+    clearCart()
     await logout()
   }
 
@@ -29,7 +32,7 @@ const HomeScreen = ({ navigation }: any) => {
       <View style={styles.container}>
 
         <View style={styles.card}>
-          <View style={[styles.avatar, { backgroundColor: !user?.image ? "#4A90E2" : "" }]}>
+          <View style={[styles.avatar, user?.image ? {} : styles.avatarDefault]}>
             {
               user?.image
                 ?
@@ -105,6 +108,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 15
+  },
+
+  avatarDefault: {
+    backgroundColor: "#4A90E2",
   },
 
   avatarText: {

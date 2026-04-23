@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import {
   View,
   Text,
@@ -32,7 +32,7 @@ export interface LoginResponse {
   image: string;
 }
 
-const LoginScreen = ({ navigation }: any) => {
+const LoginScreen = () => {
   const { login } = useContext(AuthContext)
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);

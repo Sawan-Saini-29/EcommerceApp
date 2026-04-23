@@ -3,7 +3,6 @@ import {
   View,
   Text,
   StyleSheet,
-  Dimensions,
 } from "react-native";
 import { GlobleStyle } from "../components/GlobleStyle";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -16,7 +15,7 @@ const SplashScreen = ({ navigation }: any) => {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [navigation]);
 
   return (
     <SafeAreaView style={styles.container}>
