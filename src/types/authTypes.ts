@@ -1,12 +1,15 @@
 export interface User {
-  name: string
-  email: string
-  password: string
+  id: number;
+  username: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  image: string;
 }
 
 export interface AuthContextType {
   user: User | null
-  login: (email: string, password: string) => Promise<void>
-  signup: (name: string, email: string, password: string) => Promise<void>
+  login: (responnse: User, token: string, refreshToken: string) => Promise<void>
   logout: () => void
 }

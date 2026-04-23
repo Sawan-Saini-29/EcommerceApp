@@ -5,14 +5,12 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
-  Dimensions,
 } from "react-native";
 
 import CustomInput from "../components/CustomInput";
 import CustomButton from "../components/CustomButton";
 import apiService from "../services/api";
 import { AuthContext } from "../context/AuthContext";
-import { validateEmail } from "../utils/validation";
 import ErrorModal from "../components/ErrorModal";
 import { GlobleStyle } from "../components/GlobleStyle";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -23,16 +21,21 @@ interface LoginRequest {
 }
 
 export interface LoginResponse {
+  accessToken: string;
+  refreshToken: string;
   id: number;
   username: string;
   email: string;
-  accessToken: string;
-  refreshToken: string;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  image: string;
 }
 
 const LoginScreen = ({ navigation }: any) => {
-  const { login } = useContext(AuthContext);
+  const { login } = useContext(AuthContext)
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
   const [password, setPassword] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [errorVisible, setErrorVisible] = useState(false);
@@ -40,27 +43,36 @@ const LoginScreen = ({ navigation }: any) => {
 
 
   const handleLogin = async () => {
-
+    setLoading(true);
     if (!email || !password) {
       setErrorMessage("Please enter username and password")
       setErrorVisible(true)
+      setLoading(false);
       return;
     }
 
     if (!password) {
       setErrorMessage("Password Required")
       setErrorVisible(true)
+      setLoading(false);
+      return;
     }
 
     try {
-      const response = await apiService.post<LoginResponse, LoginRequest>("/auth/login", {
+      const payload = {
         username: email,
-        password,
-      });
-      console.log("Login successful:", response.data);
+        password: password,
+      };
+
+      const response = await apiService.post<LoginResponse, LoginRequest>("/auth/login", payload);
+      login(response.data, response.data.accessToken, response.data.refreshToken)
     } catch (error: any) {
-      setErrorMessage(error.message)
+      console.log("error", error)
+      setErrorMessage(error.response?.data?.message || "An error occurred")
       setErrorVisible(true)
+    }
+    finally {
+      setLoading(false);
     }
   };
 
@@ -74,7 +86,7 @@ const LoginScreen = ({ navigation }: any) => {
         style={styles.container}
       >
         <View style={styles.card}>
-          <Text style={styles.title}>Welcome Back</Text>
+          <Text style={styles.title}>Welcome</Text>
           <Text style={styles.subtitle}>Login to your account</Text>
 
           <CustomInput
@@ -92,6 +104,7 @@ const LoginScreen = ({ navigation }: any) => {
 
           <CustomButton
             title="Login"
+            loading={loading}
             onPress={handleLogin}
           />
 

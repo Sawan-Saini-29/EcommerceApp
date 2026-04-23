@@ -6,7 +6,6 @@ import { AuthContext } from "../context/AuthContext"
 import SplashScreen from "../screens/SplashScreen"
 import LoginScreen from "../screens/LoginScreen"
 import HomeScreen from "../screens/HomeScreen"
-import UserListScreen from "../screens/UserListScreen"
 
 export type RootStackParamList = {
   Splash: undefined
@@ -35,7 +34,6 @@ const AppNavigator = () => {
       ) : (
         <>
           <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="UserListScreen" component={UserListScreen} />
         </>
       )}
 

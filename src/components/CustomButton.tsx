@@ -23,7 +23,7 @@ const CustomButton: React.FC<Props> = ({
     <TouchableOpacity
       style={[styles.button, disabled && styles.disabled]}
       onPress={onPress}
-      disabled={disabled}
+      disabled={disabled || loading}
     >
       {loading ? (
         <ActivityIndicator color="#fff" />

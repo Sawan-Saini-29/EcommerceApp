@@ -105,7 +105,8 @@ const styles = StyleSheet.create({
     },
 
     cancelButton: {
-        marginRight: 15
+        marginRight: 15,
+        justifyContent: "center",
     },
 
     cancelText: {

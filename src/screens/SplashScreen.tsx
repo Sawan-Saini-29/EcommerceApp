@@ -24,8 +24,8 @@ const SplashScreen = ({ navigation }: any) => {
       <View style={GlobleStyle.circleBottom} />
 
       <View style={styles.content}>
-        <Text style={styles.logo}>Auth App</Text>
-        <Text style={styles.subtitle}>Secure Authentication</Text>
+        <Text style={styles.logo}>E Commerce App</Text>
+        <Text style={styles.subtitle}>Secure Shopping Experience</Text>
       </View>
     </SafeAreaView>
   );

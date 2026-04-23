@@ -1,8 +1,9 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { use, useContext, useEffect, useState } from "react"
 import {
   View,
   Text,
   StyleSheet,
+  Image,
 } from "react-native"
 
 import CustomButton from "../components/CustomButton"
@@ -12,7 +13,7 @@ import { GlobleStyle } from "../components/GlobleStyle"
 import { SafeAreaView } from "react-native-safe-area-context"
 
 const HomeScreen = ({ navigation }: any) => {
-  const { user, logout } = useContext(AuthContext)
+  const { logout, user } = useContext(AuthContext)
   const [visible, setVisible] = useState(false)
 
   const confirmLogout = async () => {
@@ -28,34 +29,30 @@ const HomeScreen = ({ navigation }: any) => {
       <View style={styles.container}>
 
         <View style={styles.card}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>
-              {user?.name?.charAt(0).toUpperCase()}
-            </Text>
+          <View style={[styles.avatar, { backgroundColor: !user?.image ? "#4A90E2" : "" }]}>
+            {
+              user?.image
+                ?
+                <Image source={{ uri: user?.image }} style={styles.avatarImage} resizeMode="contain" />
+                :
+                <Text style={styles.avatarText}>
+                  {user?.firstName?.charAt(0).toUpperCase()}
+                </Text>
+            }
+
           </View>
 
           <Text style={styles.title}>
-            Welcome Back to the Home Page!
+            Welcome Back
           </Text>
 
           <Text style={styles.name}>
-            {user?.name}
+            {user?.firstName + " " + user?.lastName}
           </Text>
 
           <Text style={styles.email}>
             {user?.email}
           </Text>
-
-          <CustomButton
-            title="See Users List"
-            onPress={() => navigation.navigate("UserListScreen")}
-          />
-
-          <CustomButton
-            title="See App Tree Structure"
-            onPress={() => navigation.navigate("FileTree")}
-          />
-
           <CustomButton
             title="Logout"
             onPress={() => setVisible(true)}
@@ -105,7 +102,6 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 40,
-    backgroundColor: "#4A90E2",
     justifyContent: "center",
     alignItems: "center",
     marginBottom: 15
@@ -136,5 +132,10 @@ const styles = StyleSheet.create({
     color: "#777",
     marginBottom: 25
   },
+  avatarImage: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 40,
+  }
 
 })
