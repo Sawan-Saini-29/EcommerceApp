@@ -88,28 +88,25 @@ const TabNavigator = () => {
 const DrawerNavigator = () => {
   return (
     <Drawer.Navigator
-      screenOptions={{
+      screenOptions={({ navigation }) => ({
         headerStyle: {
           backgroundColor: '#4A90E2',
         },
         headerTintColor: '#fff',
-        headerTitleStyle: {
-          fontWeight: 'bold',
-        },
 
         headerLeft: () => (
           <TouchableOpacity
-            onPress={() => console.log('Three dot clicked')}
+            onPress={() => navigation.toggleDrawer()}
             style={{ marginLeft: 15 }}
           >
             <ListIcon
-              size={22}
+              size={26}
               color="#fff"
               weight="bold"
             />
           </TouchableOpacity>
         ),
-      }}
+      })}
     >
       <Drawer.Screen
         name="Shop"
