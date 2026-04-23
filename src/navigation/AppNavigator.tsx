@@ -8,7 +8,7 @@ import { CartContext } from "../context/CartContext"
 
 import SplashScreen from "../screens/SplashScreen"
 import LoginScreen from "../screens/LoginScreen"
-import HomeScreen from "../screens/HomeScreen"
+import ProfileScreen from "../screens/ProfileScreen"
 import ProductsScreen from "../screens/ProductsScreen"
 import CartScreen from "../screens/CartScreen"
 import { ShoppingBagIcon, ListIcon, ShoppingCartIcon } from "phosphor-react-native"
@@ -117,7 +117,7 @@ const DrawerNavigator = () => {
       />
       <Drawer.Screen
         name="Profile"
-        component={HomeScreen}
+        component={ProfileScreen}
         options={{
           title: 'User Profile',
         }}

@@ -5,4 +5,5 @@ const Icon = ({ children, ...props }) => React.createElement('Text', props, chil
 module.exports = {
   Eye: Icon,
   EyeSlash: Icon,
+  MagnifyingGlassIcon: Icon,
 };

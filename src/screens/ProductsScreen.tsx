@@ -7,8 +7,10 @@ import {
   Image,
   TouchableOpacity,
   RefreshControl,
+  TextInput,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { MagnifyingGlassIcon } from "phosphor-react-native";
 import apiService from "../services/api";
 import { Product } from "../types/authTypes";
 import { CartContext } from "../context/CartContext";
@@ -20,6 +22,7 @@ const ProductsScreen = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const { cart, addToCart, updateQuantity } = useContext(CartContext);
 
   useEffect(() => {
@@ -37,6 +40,12 @@ const ProductsScreen = () => {
       setRefreshing(false);
     }
   };
+
+  const filteredProducts = searchTerm.trim()
+    ? products.filter((product) =>
+        product.title.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : products;
 
   const onRefresh = () => {
     setRefreshing(true);
@@ -98,15 +107,42 @@ const ProductsScreen = () => {
     <SafeAreaView style={styles.container}>
       <View style={GlobleStyle.circleTop} />
       <View style={GlobleStyle.circleBottom} />
-      <FlatList
-        data={products}
-        renderItem={renderProduct}
-        keyExtractor={(item) => item.id.toString()}
-        contentContainerStyle={styles.listContainer}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }
-      />
+      
+      <View style={styles.searchContainer}>
+        <MagnifyingGlassIcon
+          size={20}
+          color="#666"
+          style={styles.searchIcon}
+        />
+        <TextInput
+          style={styles.searchInput}
+          placeholder="Search products..."
+          placeholderTextColor="#999"
+          value={searchTerm}
+          onChangeText={setSearchTerm}
+        />
+        {searchTerm.trim() !== "" && (
+          <TouchableOpacity onPress={() => setSearchTerm("")}>
+            <Text style={styles.clearButton}>✕</Text>
+          </TouchableOpacity>
+        )}
+      </View>
+
+      {filteredProducts.length === 0 && searchTerm.trim() !== "" ? (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.emptyText}>No products found</Text>
+        </View>
+      ) : (
+        <FlatList
+          data={filteredProducts}
+          renderItem={renderProduct}
+          keyExtractor={(item) => item.id.toString()}
+          contentContainerStyle={styles.listContainer}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+          }
+        />
+      )}
     </SafeAreaView>
   );
 };
@@ -117,6 +153,44 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#f5f5f5",
+  },
+  searchContainer: {
+    marginTop : -25,
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#fff",
+    marginHorizontal: 16,
+    marginBottom: 12,
+    paddingHorizontal: 12,
+    borderRadius: 8,
+    borderColor: "#e0e0e0",
+    borderWidth: 1,
+    height: 48,
+  },
+  searchIcon: {
+    marginRight: 8,
+  },
+  searchInput: {
+    flex: 1,
+    fontSize: 16,
+    color: "#333",
+    paddingVertical: 8,
+  },
+  clearButton: {
+    fontSize: 20,
+    color: "#999",
+    fontWeight: "bold",
+    paddingHorizontal: 8,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  emptyText: {
+    fontSize: 16,
+    color: "#999",
+    fontWeight: "500",
   },
   listContainer: {
     padding: 16,

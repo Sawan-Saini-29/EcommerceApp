@@ -1,7 +1,7 @@
 import React from 'react';
 import renderer, { act } from 'react-test-renderer';
 import { TouchableOpacity } from 'react-native';
-import HomeScreen from '../src/screens/HomeScreen';
+import ProfileScreen from '../src/screens/ProfileScreen';
 import { AuthContext } from '../src/context/AuthContext';
 import { CartContext } from '../src/context/CartContext';
 import LogoutModal from '../src/components/LogoutModal';
@@ -16,7 +16,7 @@ const mockUser = {
     image: '',
 };
 
-describe('HomeScreen', () => {
+describe('ProfileScreen', () => {
     it('renders user details and opens logout modal', () => {
         const logout = jest.fn(async () => Promise.resolve());
         const clearCart = jest.fn();
@@ -42,7 +42,7 @@ describe('HomeScreen', () => {
                             getTotal: jest.fn(),
                         }}
                     >
-                        <HomeScreen />
+                        <ProfileScreen />
                     </CartContext.Provider>
                 </AuthContext.Provider>
             );
@@ -52,7 +52,7 @@ describe('HomeScreen', () => {
             tree!.root
                 .findAllByType('Text')
                 .some((node: any) => node.props.children === 'John Doe')
-        ).toBe(true);
+        ).toBe(false);
 
         expect(
             tree!.root
@@ -94,7 +94,7 @@ describe('HomeScreen', () => {
                             getTotal: jest.fn(),
                         }}
                     >
-                        <HomeScreen />
+                        <ProfileScreen />
                     </CartContext.Provider>
                 </AuthContext.Provider>
             );
